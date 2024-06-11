@@ -1,0 +1,59 @@
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trident Blog</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <%- include("partials/header", { loginUrl: loginUrl,HomeUrl:HomeUrl,SignupUrl:SignupUrl }); -%>
+    <div class="container">
+<div class="banner">
+    <img src="/images/banner.jpg" alt="Banner Image" class="banner-image">
+</div>
+<h1>Welcome to Trident Blog!</h1>
+ <p>
+    Discover, Learn, and Grow with Us
+    About Us
+    Welcome to Trident Blog, your go-to source for insightful articles, tips, and inspiration on [your blog's main topics or themes, e.g., travel, technology, health, lifestyle, etc.]. Whether you're looking to stay updated with the latest trends, seeking advice, or just here for some interesting reads, we've got something for everyone.</p>
+<h1>Today's Update</h1>
+
+  
+<div class="posts-container">
+    <% if (posts.length === 0) { %>
+      <!-- Default Cards -->
+      <div class="card">
+        <img src="/images/techno.jpg" alt="Default Image 1" class="card-image">
+        <h2>Future Scope</h2>
+        <p>In the dim light of a well-equipped workshop, a technician expertly manipulates the delicate components of a mechanical watch. Surrounded by an array of specialized tools and parts, the focus is sharp on their hands as they carefully replace and adjust tiny gears and screws. This image captures the intricate work and attention to detail required in watchmaking and repair, reflecting the blend of tradition, skill, and precision technology that defines this craft.</p>
+      
+      </div>
+      <div class="card">
+        <img src="/images/homedecore.jpg" alt="Default Image 2" class="card-image">
+        <h2>Interior Design Goals</h2>
+        <p>As the day comes to an end, the polished floors of this expansive corporate hallway capture the warm glow of recessed lighting above. The light spills onto the sleek surface, creating a pathway of illumination that leads the eye through the modern architecture and towards the vanishing point in the distance. This serene moment, devoid of bustling activity, evokes a sense of calm and order—an interplay of light, shadows, and reflections perfectly encapsulated in the stillness of the space</p>
+
+      </div>
+    <% } else { %>
+      <!-- Dynamic Posts -->
+      <% posts.forEach(function(post) { %>
+        <div class="card">
+          <h2><%= post.title %></h2>
+          <p>
+            <% if (post.content.length <= 100) { %>
+              <%= post.content %>
+            <% } else { %>
+              <%= post.content.substring(0, 100) + " ..." %>
+            <% } %>
+          </p>
+          <a href="/posts/<%= post._id %>">Read More</a>
+        </div>
+      <% }) %>
+    <% } %>
+  </div>
+
+</div>
+<%- include("partials/footer"); -%>
+</body>
+</html>

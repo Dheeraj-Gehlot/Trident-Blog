@@ -1,0 +1,74 @@
+ 
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Login</title>
+        <link rel="stylesheet" href="css/styles.css">
+    </head>
+    <body>
+      <%- include("partials/header"); -%>
+      <div class="container">
+        <% if (error_msg) { %>
+            <div class="alert"><%= error_msg %></div>
+        <% } %>
+        <form action="<%= SignupUrl %> " method="POST">
+          <!-- <div class="container"> -->
+            <div class="form-main-section">
+              <h1 class="text-center">Sign Up</h1>
+              <div class="inputs-section">
+                <label for="">Name</label>
+                <input class="form-control" type="name" name="name" placeholder="Email" required>
+              </div>
+              <div class="inputs-section">
+                <label for="">Email</label>
+                <input class="form-control" type="email" name="email" placeholder="Email" required>
+              </div>
+              <div class="inputs-section">
+                <label for="">Password</label>
+                <input class="form-control" type="password" name="password" placeholder="Password" required>
+              </div>
+              <div class="inputs-section">
+                <label for="">Confirm Password</label>
+                <input class="form-control" type="password" name="confirm_password" placeholder="Confirm Password" required>
+              </div>
+              <button class="btn-main" type="submit" onclick=submitForm()>Register</button>
+            </div>
+          <!-- </div> -->
+        </form>
+        <!-- <a href="/signup">Sign Up</a> -->
+    </div>
+        <%- include("partials/footer"); -%>
+        <script>
+            function submitForm() {
+                var formData = {
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    password: document.getElementById('password').value,
+                    confirm_password: document.getElementById('confirm_password').value
+                };
+    
+                fetch('<%= SignupUrl %>', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data);
+                    // Handle response from your API here
+                })
+                .catch(error => {
+                    console.error('There was a problem with your fetch operation:', error);
+                });
+            }
+        </script>
+    </body>
+    </html>
