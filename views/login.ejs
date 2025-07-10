@@ -1,34 +1,80 @@
- 
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="css/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body>
-  <%- include("partials/header"   ); -%>
-   
+  <%- include("partials/header" ); -%>
     <% if (error_msg) { %>
-        <div class="alert"><%= error_msg %></div>
-    <% } %>
-    <form action="<%= loginUrl %> " method="POST">
-      <div class="container">
-        <div class="form-main-section">
-          <h1 class="text-center">Login</h1>
-          <div class="inputs-section">
-            <label for="">Email</label>
-            <input class="form-control" type="email" name="email" placeholder="Email" required>
-          </div>
-          <div class="inputs-section">
-            <label for="">Password</label>
-            <input class="form-control" type="password" name="password" placeholder="Password" required>
-          </div>
-          <button class="btn-main" type="submit">Login</button>
-        </div>
+      <div class="alert">
+        <%= error_msg %>
       </div>
-    </form>
-    <!-- <a href="/signup">Sign Up</a> -->
-    <%- include("partials/footer"); -%>
+      <% } %>
+        <form id="loginForm" action="<%= loginUrl %>" method="POST" onsubmit="submitForm(event)">
+          <div class="container">
+            <div class="form-main-section">
+              <div style="text-align:center; margin-bottom: 20px;">
+                <img src="/images/logo.png" alt="Logo"
+                  style="max-width:320px; height: 100px;; display:block; margin:0 auto;">
+              </div> 
+              <div class="inputs-section">
+                <label for="email">Email</label>
+                <input class="form-control" id="email" type="email" name="email" placeholder="Email" required>
+              </div>
+              <div class="inputs-section">
+                <label for="password">Password</label>
+                <input class="form-control" id="password" type="password" name="password" placeholder="Password"
+                  required>
+              </div>
+              <button class="btn-main" type="submit">Login</button>
+              <div id="login-response" style="margin-top:10px;"></div>
+            </div>
+          </div>
+        </form>
+        <!-- <a href="/signup">Sign Up</a> -->
+        <%- include("partials/footer"); -%>
+          <script>
+            function submitForm(event) {
+              event.preventDefault(); // Prevent default form submission
+              var formData = {
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value
+              };
+              fetch('<%= loginUrl %>', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+              })
+                .then(response => response.json())
+                .then(data => {
+                  const responseDiv = document.getElementById('login-response');
+                  if (data.status === false && data.errors && data.errors.length > 0) {
+                    responseDiv.style.color = 'red';
+                    responseDiv.innerText = data.errors.map(e => e.msg).join('\n');
+                  } else if (data.status === true) {
+                    responseDiv.style.color = 'green';
+                    responseDiv.innerText = data.message || 'Login successful!';
+                    if (data.token) {
+                      localStorage.setItem('token', data.token);
+                      window.location.href = '/dashboard';
+                    }
+                  } else {
+                    responseDiv.style.color = 'orange';
+                    responseDiv.innerText = 'Unexpected response.';
+                  }
+                })
+                .catch(error => {
+                  document.getElementById('login-response').style.color = 'red';
+                  document.getElementById('login-response').innerText = 'Error: ' + error;
+                });
+            } 
+          </script>
 </body>
+
 </html>

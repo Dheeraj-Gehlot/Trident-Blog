@@ -1,31 +1,34 @@
+
 import mongoose  from "mongoose";
 
 const Schema = mongoose.Schema;
 const DocumentSchema = new Schema({
-    email :{
+    Title :{
         type :String,
     },
-    first_name : {
+    Seo_Meta_Title : {
         type:String
     },
-    last_name: {
-        type : String
-    },
-    password : {
-        type : String
-    },
-    password_salt :{
+    Heading : {
         type:String
     },
-    type:{
-        type:String  
-    }
+    Description : {
+        type:String
+    },
+    Image : {
+        type:String
+    },
+    Category : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'category',
+    }, 
 },{
-    timestemps:true, 
+    timestamps:true,
 });
 
-const PostDetails = mongoose.model('tbl_post',DocumentSchema);
+const PostDetails = mongoose.model('blog',DocumentSchema);
 
 export  {
     PostDetails
 }  
+ 

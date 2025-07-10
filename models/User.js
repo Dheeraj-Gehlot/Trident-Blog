@@ -4,24 +4,29 @@ const Schema = mongoose.Schema;
 const DocumentSchema = new Schema({
     email :{
         type :String,
+        default:null
     },
     name : {
-        type:String
+        type:String,
+        default:null 
     }, 
     password : {
-        type : String
+        type : String,
+        default:null 
     },
     password_salt :{
-        type:String
+        type:String,
+        default:null 
     },
-    type:{
-        type:String  
+    role:{
+        type:String,
+        default:null  
     }
 },{
-    timestemps:true, 
+    timestamps:true, 
 });
 
-const UserDetails = mongoose.model('tbl_user',DocumentSchema);
+const UserDetails = mongoose.model('user',DocumentSchema);
 
 export  {
     UserDetails

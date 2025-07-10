@@ -9,7 +9,7 @@ const genratePassword = (pass)=>{
 
 const createToken = (id)=>{ 
     return jwt.sign({ id }, process.env.TOKEN_KEY, {
-      expiresIn: '1h',
+      expiresIn: '5minutes', // Token will expire in 5 minutes
     }); 
 }
 

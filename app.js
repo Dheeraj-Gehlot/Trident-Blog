@@ -9,6 +9,7 @@ import cors from 'cors';
 import router from './routes/routes.js';
 import dotenv from 'dotenv';
 import fileUpload from 'express-fileupload'; 
+import morgan from 'morgan'; // Import morgan for logging
 
 
 const app = express(); 
@@ -36,6 +37,7 @@ app.use(bodyParser.urlencoded({
     limit: '50mb',
     extended: true
 }));
+app.use(morgan('dev'));
 // app.use(cors()); 
 app.use((err, req, res, next) => { 
     res.status(err.status || 500);
