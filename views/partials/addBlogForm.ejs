@@ -1,0 +1,44 @@
+<!-- views/partials/addBlogForm.ejs -->
+<form class="blog-form" id="createBlogForm" enctype="multipart/form-data">
+  <h2>Create Blog</h2>
+  <label for="title">Title</label>
+  <input type="text" id="title" name="Title" required>
+  <label for="seo_meta_title">SEO Meta Title</label>
+  <input type="text" id="seo_meta_title" name="Seo_Meta_Title" required>
+  <label for="heading">Heading</label>
+  <input type="text" id="heading" name="Heading" required>
+  <label for="description">Description</label>
+  <textarea id="description" name="Description" rows="7" required></textarea>
+  <label for="image">Image</label>
+  <input type="file" id="image" name="Image" accept="image/*" required>
+  <label for="category">Category</label>
+  <select id="category" name="Category" required>
+    <option value="">Select Category</option>
+  </select>
+  <button type="submit">Save</button>
+  <button type="button" id="cancelBlogBtn" style="margin-left:10px;background:#dc3545;">Cancel</button>
+</form>
+<script>
+  async function populateCategoryDropdown() {
+    try {
+      const res = await fetch('/category-list', { headers: getAuthHeaders() });
+      const data = await res.json();
+      if (data.status && data.categories) {
+        const select = document.getElementById('category');
+        select.innerHTML = '<option value="">Select Category</option>';
+        data.categories.forEach(cat => {
+          const opt = document.createElement('option');
+          opt.value = cat._id;
+          opt.textContent = cat.name;
+          select.appendChild(opt);
+        });
+      }
+    } catch (err) {
+      // Optionally handle error
+    }
+  }
+  // Populate on form open
+  document.getElementById('addBlogBtn').addEventListener('click', populateCategoryDropdown);
+  // Also populate when editing a blog
+  window.populateCategoryDropdown = populateCategoryDropdown;
+</script>
